@@ -21,10 +21,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
-    RecyclerView myrv;
-    int i = 20;
-    ArrayList<String> posterURL = new ArrayList<String>();
-    RecyclerViewAdapter myAdapter;
+    private RecyclerView myrv;
+    private int checked = 0;
+    private ArrayList<String> posterURL = new ArrayList<String>();
+    private RecyclerViewAdapter myAdapter;
     private static Retrofit retrofit;
     private List<Movies> results;
 
@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Popular Movies");
 
 
+
         // Recycler View related stuff
         myrv = (RecyclerView) findViewById(R.id.recyclerview_id);
         myrv.setLayoutManager(new GridLayoutManager(MainActivity.this,2));
@@ -61,23 +62,63 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         MovieAPIKey = BuildConfig.ApiKey;
-
-
         client = retrofit.create(MovieAPIClient.class);
-        call = client.getPopularMovies(MovieAPIKey);
-        getMovieResults(call);
 
+
+        if(savedInstanceState != null){
+            checked = savedInstanceState.getInt("CHECKED_VALUE");
+        }
+
+        switch (checked){
+            case 0:
+                results.clear();
+                call = client.getPopularMovies(MovieAPIKey);
+                getMovieResults(call);
+                break;
+            case 1:
+                results.clear();
+                call = client.getPopularMovies(MovieAPIKey);
+                getMovieResults(call);
+                break;
+            case 2:
+                results.clear();
+                call = client.getTopRatedMovies(MovieAPIKey);
+                getMovieResults(call);
+
+        }
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_menu, menu);
-        menu.findItem(R.id.PopularMovies).setChecked(true);
+
+        switch (checked){
+            case 0:
+                menu.findItem(R.id.PopularMovies).setChecked(true);
+                break;
+            case 1:
+                menu.findItem(R.id.PopularMovies).setChecked(true);
+                break;
+            case 2:
+                menu.findItem(R.id.TopRated).setChecked(true);
+        }
         return true;
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt("CHECKED_VALUE", checked);
+        super.onSaveInstanceState(outState);
+    }
 
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(item.getItemId() == R.id.PopularMovies){
+            checked = 1;
+        }else{
+            checked = 2;
+        }
+
         switch (item.getItemId()) {
             case R.id.PopularMovies:
                 if(item.isChecked()){
