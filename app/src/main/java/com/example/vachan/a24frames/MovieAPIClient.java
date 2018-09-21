@@ -9,12 +9,8 @@ import retrofit2.http.Query;
 public interface MovieAPIClient {
 
     @GET("movie/popular")
-    Call<MovieResults> getPopularMovies (@Query("api_key") String apiKey, @Query("page")int page);
-
-    //Overloaded method
-    @GET("movie/popular")
     Call<MovieResults> getPopularMovies (@Query("api_key") String apiKey);
 
     @GET("movie/top_rated")
-    Call<MovieResults> getTopRatedMovies (@Query("api_key") String apiKey, @Query("page")int page);
+    Call<MovieResults> getTopRatedMovies (@Query("api_key") String apiKey);
 }

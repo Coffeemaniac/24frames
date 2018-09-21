@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 else{
                     item.setChecked(true);
                     results.clear();
-                    call = client.getPopularMovies("e0bc38ed5e3637d7ec5c1b21ce5cd9ab", i);
+                    call = client.getPopularMovies("e0bc38ed5e3637d7ec5c1b21ce5cd9ab");
                     getMovieResults(call);
                 }
             case R.id.TopRated:
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                 else{
                     item.setChecked(true);
                     results.clear();
-                    call = client.getTopRatedMovies("e0bc38ed5e3637d7ec5c1b21ce5cd9ab", i);
+                    call = client.getTopRatedMovies("e0bc38ed5e3637d7ec5c1b21ce5cd9ab");
                     getMovieResults(call);
 
                 }
