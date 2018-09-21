@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     private MovieAPIClient client;
     private Call<MovieResults> call;
+    private String MovieAPIKey;
 
 
     @Override
@@ -37,20 +38,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         results = new ArrayList<Movies>();
+
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         myToolbar.setBackgroundColor(Color.parseColor("#1976d2"));
         setSupportActionBar(myToolbar);
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         getSupportActionBar().setTitle("Popular Movies");
 
+
+        // Recycler View related stuff
         myrv = (RecyclerView) findViewById(R.id.recyclerview_id);
-
         myrv.setLayoutManager(new GridLayoutManager(MainActivity.this,2));
-
         myAdapter = new RecyclerViewAdapter(MainActivity.this, results);
-
         myrv.setAdapter(myAdapter);
 
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         retrofit = new Retrofit.Builder()
                 //specify json converter
                 .addConverterFactory(GsonConverterFactory.create())
@@ -59,8 +60,11 @@ public class MainActivity extends AppCompatActivity {
                 .baseUrl("https://api.themoviedb.org/3/")
                 .build();
 
+        MovieAPIKey = BuildConfig.ApiKey;
+
+
         client = retrofit.create(MovieAPIClient.class);
-        call = client.getPopularMovies("e0bc38ed5e3637d7ec5c1b21ce5cd9ab");
+        call = client.getPopularMovies(MovieAPIKey);
         getMovieResults(call);
 
     }
@@ -82,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                 else{
                     item.setChecked(true);
                     results.clear();
-                    call = client.getPopularMovies("e0bc38ed5e3637d7ec5c1b21ce5cd9ab");
+                    call = client.getPopularMovies(MovieAPIKey);
                     getMovieResults(call);
                 }
             case R.id.TopRated:
@@ -92,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
                 else{
                     item.setChecked(true);
                     results.clear();
-                    call = client.getTopRatedMovies("e0bc38ed5e3637d7ec5c1b21ce5cd9ab");
+                    call = client.getTopRatedMovies(MovieAPIKey);
                     getMovieResults(call);
 
                 }
@@ -118,10 +122,6 @@ public class MainActivity extends AppCompatActivity {
         });
         return true;
     }
-
-
-
-
 }
 
 
