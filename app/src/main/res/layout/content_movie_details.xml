@@ -109,14 +109,17 @@
             tools:text="@string/synopsis" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/trailer"
+            android:alpha="0.1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:text="FAVOURITE"
+            android:text="WATCH TRAILER"
             app:layout_constraintBottom_toBottomOf="@+id/imageView"
             app:layout_constraintStart_toEndOf="@+id/imageView" />
 
+
     </android.support.constraint.ConstraintLayout>
+
 
 </android.support.v4.widget.NestedScrollView>

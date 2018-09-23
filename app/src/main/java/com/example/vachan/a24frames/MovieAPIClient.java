@@ -13,4 +13,12 @@ public interface MovieAPIClient {
 
     @GET("movie/top_rated")
     Call<MovieResults> getTopRatedMovies (@Query("api_key") String apiKey);
+
+    //TODO: Create data model class for reviewsList and review
+    @GET("movie/{id}/reviews")
+    Call<ReviewsList> getReviews(@Path("id") String id, @Query("api_key") String apiKey);
+
+    //TODO: Create Data model class for Videos and trailers
+    @GET("movie/{id}/videos")
+    Call <Videos> getVideos(@Path("id") String id, @Query("api_key") String apiKey);
 }

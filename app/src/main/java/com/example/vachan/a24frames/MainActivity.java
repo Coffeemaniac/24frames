@@ -30,7 +30,15 @@ public class MainActivity extends AppCompatActivity {
 
     private MovieAPIClient client;
     private Call<MovieResults> call;
-    private String MovieAPIKey;
+    public String MovieAPIKey;
+
+    /*
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(viewPagerAdapter);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
+     */
 
 
     @Override
@@ -43,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
         myToolbar.setBackgroundColor(Color.parseColor("#1976d2"));
         setSupportActionBar(myToolbar);
         getSupportActionBar().setTitle("Popular Movies");
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
 
 

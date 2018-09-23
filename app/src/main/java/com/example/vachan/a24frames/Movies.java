@@ -6,7 +6,7 @@ public class Movies {
 
     @SerializedName("overview")
     private String plot;
-
+    private String id;
     private String title;
     private String release_date;
 
@@ -21,13 +21,14 @@ public class Movies {
 
 
 
-    public Movies(String plot, String title, String release_date, String imageUrl, String backdropURL, String rating) {
+    public Movies(String plot, String title, String release_date, String imageUrl, String backdropURL, String rating, String id) {
         this.plot = plot;
         this.title = title;
         this.release_date = release_date;
         this.imageUrl = imageUrl;
         this.backdropURL = backdropURL;
         this.rating = rating;
+        this.id = id;
 
     }
 
@@ -55,4 +56,7 @@ public class Movies {
     public String getBackdropURL() {
         return "https://image.tmdb.org/t/p/w780" + backdropURL;
     }
+
+    public String getId() { return id; }
+
 }
