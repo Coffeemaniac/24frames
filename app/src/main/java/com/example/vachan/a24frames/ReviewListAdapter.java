@@ -35,7 +35,8 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.My
     @Override
     public void onBindViewHolder(@NonNull ReviewListAdapter.MyViewHolder holder, int position) {
         Log.v(LOG_TAG, "The string value is " + mData.get(position).getContent());
-        holder.infoTv.setText("" + mData.get(position).getContent());
+        holder.authorTv.setText(mData.get(position).getName());
+        holder.infoTv.setText(mData.get(position).getContent());
     }
 
     @Override
@@ -46,10 +47,12 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.My
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView infoTv;
+        TextView authorTv;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             infoTv = (TextView) itemView.findViewById(R.id.info_text);
+            authorTv = (TextView) itemView.findViewById(R.id.name);
         }
     }
 }

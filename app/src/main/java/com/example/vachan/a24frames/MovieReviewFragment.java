@@ -78,7 +78,7 @@ public class MovieReviewFragment extends Fragment {
             @Override
             public void onResponse(Call<ReviewsList> call, Response<ReviewsList> response) {
                 reviews.addAll(response.body().getReviewList());
-                Log.v("results", "the value is " + reviews.get(0).getContent());
+                Log.v("results", "the value is " + reviews.size());
                 reviewAdapter.notifyDataSetChanged();
             }
 
