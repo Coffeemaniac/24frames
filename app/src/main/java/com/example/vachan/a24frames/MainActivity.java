@@ -1,6 +1,8 @@
 package com.example.vachan.a24frames;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -8,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,12 +62,18 @@ public class MainActivity extends AppCompatActivity {
         // Recycler View related stuff
         myrv = (RecyclerView) findViewById(R.id.recyclerview_id);
         myrv.setLayoutManager(new GridLayoutManager(MainActivity.this,2));
-        myAdapter = new RecyclerViewAdapter(MainActivity.this, results);
+        myAdapter = new RecyclerViewAdapter(MainActivity.this, results, new RecyclerViewAdapter.EventListener() {
+            @Override
+            public void movieClicked(Intent intent, ImageView imageView) {
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MainActivity.this, imageView, "sample_transition");
+                startActivity(intent, options.toBundle());
+            }
+        });
         myrv.setAdapter(myAdapter);
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         retrofit = new Retrofit.Builder()
-                //specify json converter
+                //myrv = (RecyclerView) findViewById(specify json converter
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 //specify base URL for the API

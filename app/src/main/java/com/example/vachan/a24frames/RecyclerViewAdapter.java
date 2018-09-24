@@ -12,16 +12,23 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
 
     private Context mContext ;
     private ArrayList<Movies> mData ;
+    private EventListener eventListener;
+
+    public interface EventListener {
+        void movieClicked(Intent intent, ImageView imageView);
+    }
 
 
-    public RecyclerViewAdapter(Context mContext, ArrayList<Movies> mData) {
+    public RecyclerViewAdapter(Context mContext, ArrayList<Movies> mData, EventListener eventListener) {
         this.mContext = mContext;
         this.mData = mData;
+        this.eventListener = eventListener;
     }
 
     @Override
@@ -33,7 +40,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
         Picasso.with(mContext).load(mData.get(position).getImageUrl())
                 .into(holder.img_book_thumbnail);
@@ -47,7 +54,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 intent.putExtra("Movie", movie);
 
                 // start the activity
-                mContext.startActivity(intent);
+                eventListener.movieClicked(intent, holder.img_book_thumbnail);
+
 
             }
         });
