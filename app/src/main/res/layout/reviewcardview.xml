@@ -5,13 +5,16 @@
     android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:elevation="8dp"
+    android:layout_margin="16dp"
     app:cardBackgroundColor="@color/cardview_light_background"
     tools:layout_editor_absoluteX="8dp"
     tools:layout_editor_absoluteY="130dp">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp">
 
         <TextView
             android:id="@+id/name"
@@ -27,13 +30,12 @@
         <TextView
             android:id="@+id/info_text"
             android:layout_width="match_parent"
-            android:layout_height="85dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
             android:textColor="@android:color/black"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/name"
-            tools:text="fuck the world" />
+            app:layout_constraintTop_toBottomOf="@+id/name" />
 
     </android.support.constraint.ConstraintLayout>
 
