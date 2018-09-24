@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> posterURL = new ArrayList<String>();
     private RecyclerViewAdapter myAdapter;
     private static Retrofit retrofit;
-    private List<Movies> results;
+    private ArrayList<Movies> results;
 
     private MovieAPIClient client;
     private Call<MovieResults> call;

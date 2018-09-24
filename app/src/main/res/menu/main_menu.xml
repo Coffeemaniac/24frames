@@ -23,7 +23,7 @@
         <item
             android:id="@+id/Favourite"
             app:showAsAction="never"
-            android:title="favourite"
+            android:title="Favourite"
             android:orderInCategory="2"/>
     </group>
 

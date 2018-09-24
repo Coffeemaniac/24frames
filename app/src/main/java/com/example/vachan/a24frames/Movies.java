@@ -1,8 +1,12 @@
 package com.example.vachan.a24frames;
 
+import android.graphics.Movie;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
-public class Movies {
+public class Movies implements Parcelable{
 
     @SerializedName("overview")
     private String plot;
@@ -18,6 +22,17 @@ public class Movies {
 
     @SerializedName("backdrop_path")
     private String backdropURL;
+
+    public static final Parcelable.Creator CREATOR = new
+            Parcelable.Creator(){
+                public Movies createFromParcel(Parcel in){
+                    return new Movies(in);
+                }
+
+                public Movies[] newArray(int size){
+                    return new Movies[size];
+                }
+            };
 
 
 
@@ -58,5 +73,33 @@ public class Movies {
     }
 
     public String getId() { return id; }
+
+    //Parcelable constructor
+    public Movies(Parcel in){
+        this.plot = in.readString();
+        this.title = in.readString();
+        this.release_date = in.readString();
+        this.imageUrl = in.readString();
+        this.backdropURL = in.readString();
+        this.rating = in.readString();
+        this.id  = in.readString();
+    }
+
+    @Override
+    public int describeContents(){
+
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags){
+        dest.writeString(this.plot);
+        dest.writeString(this.title);
+        dest.writeString(this.release_date);
+        dest.writeString(this.imageUrl);
+        dest.writeString(this.backdropURL);
+        dest.writeString(this.rating );
+        dest.writeString(this.id);
+    }
 
 }

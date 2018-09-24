@@ -2,17 +2,18 @@ package com.example.vachan.a24frames;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MovieResults {
     @SerializedName("results")
-    List<Movies> moviesList;
+    ArrayList<Movies> moviesList;
 
-    public MovieResults(List<Movies> moviesList) {
+    public MovieResults(ArrayList<Movies> moviesList) {
         this.moviesList = moviesList;
     }
 
-    public List<Movies> getMoviesList() {
+    public ArrayList<Movies> getMoviesList() {
         return moviesList;
     }
 }

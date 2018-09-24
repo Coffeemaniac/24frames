@@ -2,6 +2,7 @@ package com.example.vachan.a24frames;
 
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.vachan.a24frames.listeners.MyUndoListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -47,25 +49,15 @@ public class MovieDetails extends AppCompatActivity {
     @BindView(R.id.trailer)
     Button button; */
     @BindView(R.id.toolbar)
-    Toolbar toolbar;
+    public Toolbar toolbar;
     @BindView(R.id.expandedImage)
-    ImageView backDrop;
+    public ImageView backDrop;
 
-
-    private Call<Videos> callVideos;
-    private Call<ReviewsList> callReviews;
-    private static Retrofit retrofit;
-    private MovieAPIClient client;
-    public static String MovieAPIKey;
-    private String youtube_url;
-
-    private ArrayList<Trailer> trailers;
-    private List<Review> review;
 
     private String id;
-    TabLayout tabLayout;
-    ViewPager viewPager;
-    MovieFragmentAdapter fragmentPagerAdapter;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    private MovieFragmentAdapter fragmentPagerAdapter;
 
 
     @Override
@@ -76,57 +68,35 @@ public class MovieDetails extends AppCompatActivity {
         ButterKnife.bind(this);
 
         Intent intent = getIntent();
-        Bundle bd = intent.getExtras();
-        String title = (String) bd.get("title");
-        toolbar.setTitle(title);
+        final Bundle bd = intent.getExtras();
+        Movies movie = bd.getParcelable("Movie");
 
+        toolbar.setTitle(movie.getTitle());
 
         viewPager = (ViewPager) findViewById(R.id.viewPager);
-        fragmentPagerAdapter = new MovieFragmentAdapter(getSupportFragmentManager(),bd);
+        fragmentPagerAdapter = new MovieFragmentAdapter(getSupportFragmentManager(), movie);
         viewPager.setAdapter(fragmentPagerAdapter);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-
-        review = new ArrayList<Review>();
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //extracting image URL
 
-        String backdrop = (String) bd.get("backdrop");
-        Picasso.with(this).load(backdrop).into(backDrop);
+        Picasso.with(this).load(movie.getBackdropURL()).into(backDrop);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Movie has been added to your fav list", Snackbar.LENGTH_LONG)
-                        .setAction("Undo", null).show();
+               Snackbar snackView =  Snackbar.make(view, "Movie Added to Favourites", Snackbar.LENGTH_LONG);
+                snackView.getView().setBackgroundColor(getResources().getColor(R.color.material_light_black));
+                snackView.setAction("Undo", new MyUndoListener()).show();
+                       // .setAction("Undo", new MyUndoListener()).show();
             }
         });
-
-
-
-        // callReviews = client.getReviews(id, MovieAPIKey);
-
-
-      /* Review callback */
-
-    /* callReviews.enqueue(new Callback<ReviewsList>() {
-         @Override
-         public void onResponse(Call<ReviewsList> call, Response<ReviewsList> response) {
-             review.addAll(response.body().getReviewList());
-            // plot.setText(review.get(0).getContent());
-         }
-
-         @Override
-         public void onFailure(Call<ReviewsList> call, Throwable t) {
-
-         }
-     }); */
-
 
     }
 }

@@ -6,18 +6,26 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MovieFragmentAdapter extends FragmentPagerAdapter {
-   // List<Review> reviews;
-    Bundle bd;
-    public MovieFragmentAdapter(FragmentManager fm,Bundle bundle) {
-        super(fm);
-       // this.reviews = review;
-        this.bd = bundle;
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
+public class MovieFragmentAdapter extends FragmentPagerAdapter {
+
+    public Movies movie;
+
+
+    public MovieFragmentAdapter(FragmentManager fm, Movies movie) {
+        super(fm);
+        this.movie = movie;
     }
 
     @Nullable
@@ -38,9 +46,9 @@ public class MovieFragmentAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch(position) {
             case 0:
-                return MovieInfoFragment.newInstance(bd); // new MovieInfoFragment
+                return MovieInfoFragment.newInstance(movie);
             case 1:
-                return new MovieReviewFragment();
+                return MovieReviewFragment.newInstance(movie);
         }
         return null;
     }

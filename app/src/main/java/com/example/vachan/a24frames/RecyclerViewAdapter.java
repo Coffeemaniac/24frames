@@ -16,17 +16,16 @@ import java.util.List;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
 
     private Context mContext ;
-    private List<Movies> mData ;
+    private ArrayList<Movies> mData ;
 
 
-    public RecyclerViewAdapter(Context mContext, List<Movies> mData) {
+    public RecyclerViewAdapter(Context mContext, ArrayList<Movies> mData) {
         this.mContext = mContext;
         this.mData = mData;
     }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         View view ;
         LayoutInflater mInflater = LayoutInflater.from(mContext);
         view = mInflater.inflate(R.layout.itemview,parent,false);
@@ -43,28 +42,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             @Override
             public void onClick(View v) {
 
-
-
                 Intent intent = new Intent(mContext, MovieDetails.class);
-
-                //TODO: Create a parcelable
-                // passing data to the book activity
                 Movies movie = mData.get(position);
-                intent.putExtra("Thumbnail", movie.getImageUrl());
-                intent.putExtra("backdrop", movie.getBackdropURL());
+                intent.putExtra("Movie", movie);
 
-                intent.putExtra("title", movie.getTitle());
-                intent.putExtra("rating", movie.getRating());
-                intent.putExtra("release", movie.getRelease_date());
-                intent.putExtra("plot", movie.getPlot());
-                intent.putExtra("id", movie.getId());
                 // start the activity
                 mContext.startActivity(intent);
 
             }
         });
-
-
     }
 
     @Override

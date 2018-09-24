@@ -48,6 +48,7 @@ public class MovieInfoFragment extends Fragment {
     private MovieAPIClient client;
     public static String MovieAPIKey;
     private String youtube_url;
+    private Movies movie;
 
     private ArrayList<Trailer> trailers;
 
@@ -67,21 +68,16 @@ public class MovieInfoFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
 
-        Bundle bd =  getArguments().getBundle("bundle");
-        String poster = (String) bd.get("Thumbnail");
-        String ratingValue = (String) bd.get("rating");
-        String releaseValue = (String) bd.get("release");
-        String plotValue = (String) bd.get("plot");
-        String title = (String) bd.get("title");
-        String id = (String) bd.get("id");
+        movie = getArguments().getParcelable("movie");
 
         trailers = new ArrayList<Trailer>();
 
-        titleView.setText(title);
-        rating.setText(ratingValue);
-        releaseDate.setText(releaseValue);
-        plot.setText(plotValue);
-        Picasso.with(getActivity()).load(poster).into(posterImage);
+        titleView.setText(movie.getTitle());
+        rating.setText(movie.getRating());
+        releaseDate.setText(movie.getRelease_date());
+        plot.setText(movie.getPlot());
+
+        Picasso.with(getActivity()).load(movie.getImageUrl()).into(posterImage);
 
         MovieAPIKey = BuildConfig.ApiKey;
 
@@ -95,7 +91,7 @@ public class MovieInfoFragment extends Fragment {
                 .build();
 
         client = retrofit.create(MovieAPIClient.class);
-        callVideos = client.getVideos(id, MovieAPIKey);
+        callVideos = client.getVideos(movie.getId(), MovieAPIKey);
 
         callVideos.enqueue(new Callback<Videos>() {
             @Override
@@ -120,10 +116,10 @@ public class MovieInfoFragment extends Fragment {
         });
     }
 
-    public static Fragment newInstance(Bundle bd) {
+    public static Fragment newInstance(Movies movie) {
         MovieInfoFragment fragment = new MovieInfoFragment();
         Bundle args = new Bundle();
-        args.putBundle("bundle", bd);
+        args.putParcelable("movie", movie);
         fragment.setArguments(args);
         return fragment;
     }
