@@ -1,4 +1,4 @@
-package com.example.vachan.a24frames;
+package com.example.vachan.a24frames.Adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,8 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.vachan.a24frames.R;
+import com.example.vachan.a24frames.model.Review;
+
 import java.util.ArrayList;
-import java.util.List;
 
 public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.MyViewHolder> {
     private Context mContext ;

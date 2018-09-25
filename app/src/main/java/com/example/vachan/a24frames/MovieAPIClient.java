@@ -1,5 +1,9 @@
 package com.example.vachan.a24frames;
 
+import com.example.vachan.a24frames.model.MovieResults;
+import com.example.vachan.a24frames.model.ReviewsList;
+import com.example.vachan.a24frames.model.Videos;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;

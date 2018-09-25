@@ -1,16 +1,22 @@
-package com.example.vachan.a24frames;
+package com.example.vachan.a24frames.Adapters;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.vachan.a24frames.BuildConfig;
+import com.example.vachan.a24frames.MovieAPIClient;
+import com.example.vachan.a24frames.R;
+import com.example.vachan.a24frames.model.Movies;
+import com.example.vachan.a24frames.model.Review;
+import com.example.vachan.a24frames.model.ReviewsList;
 
 import java.util.ArrayList;
 

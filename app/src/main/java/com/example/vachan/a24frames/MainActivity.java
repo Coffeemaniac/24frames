@@ -9,8 +9,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.vachan.a24frames.Adapters.RecyclerViewAdapter;
+import com.example.vachan.a24frames.model.MovieResults;
+import com.example.vachan.a24frames.model.Movies;
+
 import java.util.ArrayList;
-import java.util.List;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Call;

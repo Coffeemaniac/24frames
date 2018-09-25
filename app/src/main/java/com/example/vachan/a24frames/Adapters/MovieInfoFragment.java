@@ -1,4 +1,4 @@
-package com.example.vachan.a24frames;
+package com.example.vachan.a24frames.Adapters;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -13,6 +13,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.vachan.a24frames.BuildConfig;
+import com.example.vachan.a24frames.MovieAPIClient;
+import com.example.vachan.a24frames.R;
+import com.example.vachan.a24frames.model.Movies;
+import com.example.vachan.a24frames.model.Trailer;
+import com.example.vachan.a24frames.model.Videos;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

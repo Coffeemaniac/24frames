@@ -1,9 +1,8 @@
-package com.example.vachan.a24frames;
+package com.example.vachan.a24frames.model;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ReviewsList {
 

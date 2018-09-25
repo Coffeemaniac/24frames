@@ -1,22 +1,11 @@
-package com.example.vachan.a24frames;
+package com.example.vachan.a24frames.Adapters;
 
-import android.graphics.Movie;
-import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import okhttp3.OkHttpClient;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import com.example.vachan.a24frames.model.Movies;
 
 public class MovieFragmentAdapter extends FragmentPagerAdapter {
 

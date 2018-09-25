@@ -1,4 +1,4 @@
-package com.example.vachan.a24frames;
+package com.example.vachan.a24frames.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,10 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.vachan.a24frames.MovieDetails;
+import com.example.vachan.a24frames.R;
+import com.example.vachan.a24frames.model.Movies;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
 

@@ -1,6 +1,5 @@
-package com.example.vachan.a24frames;
+package com.example.vachan.a24frames.model;
 
-import android.graphics.Movie;
 import android.os.Parcel;
 import android.os.Parcelable;
 
