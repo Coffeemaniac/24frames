@@ -1,5 +1,6 @@
 package com.example.vachan.a24frames;
 
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private MovieAPIClient client;
     private Call<MovieResults> call;
     public String MovieAPIKey;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     /*
         viewPager = (ViewPager) findViewById(R.id.viewPager);
@@ -61,7 +63,15 @@ public class MainActivity extends AppCompatActivity {
 
         // Recycler View related stuff
         myrv = (RecyclerView) findViewById(R.id.recyclerview_id);
-        myrv.setLayoutManager(new GridLayoutManager(MainActivity.this,2));
+        if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+        {
+            mLayoutManager = new GridLayoutManager(this,2);
+
+        }else{
+            mLayoutManager = new GridLayoutManager(this,3);
+        }
+
+        myrv.setLayoutManager(mLayoutManager);
         myAdapter = new RecyclerViewAdapter(MainActivity.this, results);
         myrv.setAdapter(myAdapter);
 
