@@ -117,10 +117,9 @@ public class MovieDetails extends AppCompatActivity {
                         }
                     });
                     fab.setImageResource(R.drawable.ic_fav_icon);
-                    /*
                     Snackbar snackView =  Snackbar.make(view, "Movie Removed From Favourites", Snackbar.LENGTH_LONG);
                     snackView.getView().setBackgroundColor(getResources().getColor(R.color.material_light_black));
-                    snackView.show(); */
+                    snackView.show();
                     // .setAction("Undo", new MyUndoListener()).show();
                 }
             });
@@ -136,10 +135,9 @@ public class MovieDetails extends AppCompatActivity {
                         }
                     });
                     fab.setImageResource(R.drawable.ic_delete_black_24dp);
-                    /*
                     Snackbar snackView =  Snackbar.make(view, "Movie Added to Favourites", Snackbar.LENGTH_LONG);
                     snackView.getView().setBackgroundColor(getResources().getColor(R.color.material_light_black));
-                    snackView.show(); */
+                    snackView.show();
                     // .setAction("Undo", new MyUndoListener()).show();
                 }
             });
