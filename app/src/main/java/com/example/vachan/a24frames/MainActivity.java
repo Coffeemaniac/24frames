@@ -1,7 +1,10 @@
 package com.example.vachan.a24frames;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -11,10 +14,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.vachan.a24frames.Adapters.RecyclerViewAdapter;
+import com.example.vachan.a24frames.database.AppDatabase;
+import com.example.vachan.a24frames.database.MovieDao;
 import com.example.vachan.a24frames.model.MovieResults;
-import com.example.vachan.a24frames.model.Movies;
+import com.example.vachan.a24frames.database.Movies;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
@@ -27,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView myrv;
     private int checked = 0;
-    private ArrayList<String> posterURL = new ArrayList<String>();
     private RecyclerViewAdapter myAdapter;
     private static Retrofit retrofit;
     private ArrayList<Movies> results;
@@ -37,14 +42,7 @@ public class MainActivity extends AppCompatActivity {
     public String MovieAPIKey;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    /*
-        viewPager = (ViewPager) findViewById(R.id.viewPager);
-        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(viewPagerAdapter);
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
-     */
-
+    private MovieDao movieDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +57,9 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
+
+        //get MovieDAO
+        movieDao = AppDatabase.getInstance(getApplicationContext()).movieDao();
 
 
         // Recycler View related stuff
@@ -164,6 +165,18 @@ public class MainActivity extends AppCompatActivity {
                     getMovieResults(call);
 
                 }
+            case R.id.Favourite:
+                    item.setChecked(true);
+                    results.clear();
+                LiveData<List<Movies>> favMovies = movieDao.getAll();
+                favMovies.observe(this, new Observer<List<Movies>>() {
+                    @Override
+                    public void onChanged(@Nullable List<Movies> movies) {
+                        results.addAll(movies);
+                        myAdapter.notifyDataSetChanged();
+                    }
+                });
+
         }
         return (super.onOptionsItemSelected(item));
     }
@@ -173,9 +186,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<MovieResults> call, Response<MovieResults> response) {
                 results.addAll(response.body().getMoviesList());
-                for(int i = 0; i < results.size(); i++){
-                    posterURL.add(results.get(i).getImageUrl());
-                }
                 myAdapter.notifyDataSetChanged();
             }
 

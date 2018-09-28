@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import com.example.vachan.a24frames.BuildConfig;
 import com.example.vachan.a24frames.MovieAPIClient;
 import com.example.vachan.a24frames.R;
-import com.example.vachan.a24frames.model.Movies;
+import com.example.vachan.a24frames.database.Movies;
 import com.example.vachan.a24frames.model.Review;
 import com.example.vachan.a24frames.model.ReviewsList;
 

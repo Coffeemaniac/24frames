@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.example.vachan.a24frames.model.Movies;
+import com.example.vachan.a24frames.database.Movies;
 
 public class MovieFragmentAdapter extends FragmentPagerAdapter {
 

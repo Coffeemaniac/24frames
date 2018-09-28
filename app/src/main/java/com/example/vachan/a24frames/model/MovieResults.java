@@ -1,5 +1,6 @@
 package com.example.vachan.a24frames.model;
 
+import com.example.vachan.a24frames.database.Movies;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;

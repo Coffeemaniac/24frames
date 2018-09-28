@@ -10,7 +10,7 @@ import android.widget.ImageView;
 
 import com.example.vachan.a24frames.MovieDetails;
 import com.example.vachan.a24frames.R;
-import com.example.vachan.a24frames.model.Movies;
+import com.example.vachan.a24frames.database.Movies;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
 
-        Picasso.with(mContext).load(mData.get(position).getImageUrl())
+        Picasso.with(mContext).load("https://image.tmdb.org/t/p/w780" + mData.get(position).getImageUrl())
                 .into(holder.img_book_thumbnail);
 
         holder.img_book_thumbnail.setOnClickListener(new View.OnClickListener() {

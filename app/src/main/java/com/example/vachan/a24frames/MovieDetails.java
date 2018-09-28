@@ -12,8 +12,10 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.example.vachan.a24frames.Adapters.MovieFragmentAdapter;
+import com.example.vachan.a24frames.database.AppDatabase;
+import com.example.vachan.a24frames.database.MovieDao;
+import com.example.vachan.a24frames.database.Movies;
 import com.example.vachan.a24frames.listeners.MyUndoListener;
-import com.example.vachan.a24frames.model.Movies;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -53,7 +55,7 @@ public class MovieDetails extends AppCompatActivity {
 
         Intent intent = getIntent();
         final Bundle bd = intent.getExtras();
-        Movies movie = bd.getParcelable("Movie");
+        final Movies movie = bd.getParcelable("Movie");
 
         toolbar.setTitle(movie.getTitle());
 
@@ -63,18 +65,20 @@ public class MovieDetails extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
+        final MovieDao movieDao = AppDatabase.getInstance(getApplicationContext()).movieDao();
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //extracting image URL
 
-        Picasso.with(this).load(movie.getBackdropURL()).into(backDrop);
+        Picasso.with(this).load("https://image.tmdb.org/t/p/w780" + movie.getBackdropURL()).into(backDrop);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                movieDao.insert(movie);
                Snackbar snackView =  Snackbar.make(view, "Movie Added to Favourites", Snackbar.LENGTH_LONG);
                 snackView.getView().setBackgroundColor(getResources().getColor(R.color.material_light_black));
                 snackView.setAction("Undo", new MyUndoListener()).show();

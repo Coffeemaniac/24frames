@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.example.vachan.a24frames.BuildConfig;
 import com.example.vachan.a24frames.MovieAPIClient;
 import com.example.vachan.a24frames.R;
-import com.example.vachan.a24frames.model.Movies;
+import com.example.vachan.a24frames.database.Movies;
 import com.example.vachan.a24frames.model.Trailer;
 import com.example.vachan.a24frames.model.Videos;
 import com.squareup.picasso.Picasso;
@@ -79,11 +79,11 @@ public class MovieInfoFragment extends Fragment {
         trailers = new ArrayList<Trailer>();
 
         titleView.setText(movie.getTitle());
-        rating.setText(movie.getRating());
+        rating.setText(movie.getRating() + "/10");
         releaseDate.setText(movie.getRelease_date());
         plot.setText(movie.getPlot());
 
-        Picasso.with(getActivity()).load(movie.getImageUrl()).into(posterImage);
+        Picasso.with(getActivity()).load("https://image.tmdb.org/t/p/w780" + movie.getImageUrl()).into(posterImage);
 
         MovieAPIKey = BuildConfig.ApiKey;
 

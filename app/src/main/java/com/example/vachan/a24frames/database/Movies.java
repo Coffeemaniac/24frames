@@ -1,15 +1,22 @@
-package com.example.vachan.a24frames.model;
+package com.example.vachan.a24frames.database;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
+@Entity(tableName = "favourite_movies")
 public class Movies implements Parcelable{
 
+
+    @PrimaryKey
+    @NonNull
+    private String id;
     @SerializedName("overview")
     private String plot;
-    private String id;
     private String title;
     private String release_date;
 
@@ -60,15 +67,15 @@ public class Movies implements Parcelable{
     }
 
     public String getRating() {
-        return rating + "/10";
+        return rating;
     }
 
     public String getImageUrl() {
-        return "https://image.tmdb.org/t/p/w780" + imageUrl ;
+        return imageUrl ;
     }
 
     public String getBackdropURL() {
-        return "https://image.tmdb.org/t/p/w780" + backdropURL;
+        return backdropURL;
     }
 
     public String getId() { return id; }
