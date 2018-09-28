@@ -153,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
                     results.clear();
                     call = client.getPopularMovies(MovieAPIKey);
                     getMovieResults(call);
+                    break;
                 }
             case R.id.TopRated:
                 if(item.isChecked()){
@@ -163,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
                     results.clear();
                     call = client.getTopRatedMovies(MovieAPIKey);
                     getMovieResults(call);
-
+                    break;
                 }
             case R.id.Favourite:
                     item.setChecked(true);
