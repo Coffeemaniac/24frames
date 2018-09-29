@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.example.vachan.a24frames.BuildConfig;
 import com.example.vachan.a24frames.MovieAPIClient;
+import com.example.vachan.a24frames.NetworkUtil;
 import com.example.vachan.a24frames.R;
 import com.example.vachan.a24frames.database.Movies;
 import com.example.vachan.a24frames.model.Review;
@@ -68,16 +69,7 @@ public class MovieReviewFragment extends Fragment {
         rv.setAdapter(reviewAdapter);
 
         String MovieAPIKey = BuildConfig.ApiKey;
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        Retrofit retrofit = new Retrofit.Builder()
-                //specify json converter
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(httpClient.build())
-                //specify base URL for the API
-                .baseUrl("https://api.themoviedb.org/3/")
-                .build();
-
-        MovieAPIClient client = retrofit.create(MovieAPIClient.class);
+        MovieAPIClient client = NetworkUtil.getService();
         Call<ReviewsList> callReviews = client.getReviews(id, MovieAPIKey);
 
         callReviews.enqueue(new Callback<ReviewsList>() {
@@ -104,41 +96,4 @@ public class MovieReviewFragment extends Fragment {
         return fragment;
     }
 
- /*   MovieInfoFragment fragment = new MovieInfoFragment();
-    Bundle args = new Bundle();
-        args.putBundle("bundle", bd);
-        fragment.setArguments(args);
-        return fragment; */
 }
-
-/*
-MovieAPIKey = BuildConfig.ApiKey;
-                OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-                retrofit = new Retrofit.Builder()
-                        //specify json converter
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .client(httpClient.build())
-                        //specify base URL for the API
-                        .baseUrl("https://api.themoviedb.org/3/")
-                        .build();
-
-                client = retrofit.create(MovieAPIClient.class);
-                id = (String) bd.getString("id");
-                callReviews = client.getReviews(id, MovieAPIKey);
-
-
-
-
-                callReviews.enqueue(new Callback<ReviewsList>() {
-@Override
-public void onResponse(Call<ReviewsList> call, Response<ReviewsList> response) {
-        reviews.addAll(response.body().getReviewList());
-        Log.v("results", "the value is " + reviews.get(0).getContent());
-        }
-
-@Override
-public void onFailure(Call<ReviewsList> call, Throwable t) {
-
-        }
-        });
- */

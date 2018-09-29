@@ -6,13 +6,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NetworkUtil {
 
     private static Retrofit retrofit=null;
-    private static String BASE_URL = "http://api.themoviedb.org/";
+    private static String BASE_URL = "http://api.themoviedb.org/3/";
 
     public static MovieAPIClient getService(){
 
         if(retrofit==null){
-
-
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())

@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import com.example.vachan.a24frames.BuildConfig;
 import com.example.vachan.a24frames.MovieAPIClient;
+import com.example.vachan.a24frames.NetworkUtil;
 import com.example.vachan.a24frames.R;
 import com.example.vachan.a24frames.database.Movies;
 import com.example.vachan.a24frames.model.Trailer;
@@ -87,24 +89,22 @@ public class MovieInfoFragment extends Fragment {
 
         MovieAPIKey = BuildConfig.ApiKey;
 
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        retrofit = new Retrofit.Builder()
-                //specify json converter
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(httpClient.build())
-                //specify base URL for the API
-                .baseUrl("https://api.themoviedb.org/3/")
-                .build();
-
-        client = retrofit.create(MovieAPIClient.class);
+        client = NetworkUtil.getService();
         callVideos = client.getVideos(movie.getId(), MovieAPIKey);
 
         callVideos.enqueue(new Callback<Videos>() {
             @Override
             public void onResponse(Call<Videos> call, Response<Videos> response) {
                 trailers.addAll(response.body().getTrailerList());
-                youtube_url = trailers.get(0).getVideoKey();
-                button.setAlpha(1.0f);
+                Log.v("size", "the size of trailer is " + trailers.size());
+                if(trailers.size() == 0){
+                    youtube_url = null;
+                    button.setAlpha(0.0f);
+                }else{
+                    youtube_url = trailers.get(0).getVideoKey();
+                    button.setAlpha(1.0f);
+                }
+
             }
 
             @Override

@@ -11,7 +11,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -19,10 +18,8 @@ import com.example.vachan.a24frames.Adapters.MovieFragmentAdapter;
 import com.example.vachan.a24frames.database.AppDatabase;
 import com.example.vachan.a24frames.database.MovieDao;
 import com.example.vachan.a24frames.database.Movies;
-import com.example.vachan.a24frames.listeners.MyUndoListener;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -31,18 +28,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MovieDetails extends AppCompatActivity {
-   /* @BindView(R.id.imageView)
-    ImageView posterImage;
-    @BindView(R.id.textView2)
-    TextView titleView;
-    @BindView(R.id.textView5)
-    TextView rating;
-    @BindView(R.id.textView7)
-    TextView releaseDate;
-    @BindView(R.id.textView10)
-    TextView plot;
-    @BindView(R.id.trailer)
-    Button button; */
     @BindView(R.id.toolbar)
     public Toolbar toolbar;
     @BindView(R.id.expandedImage)
@@ -65,6 +50,10 @@ public class MovieDetails extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
         Intent intent = getIntent();
         final Bundle bd = intent.getExtras();
         movie = bd.getParcelable("Movie");
@@ -80,7 +69,6 @@ public class MovieDetails extends AppCompatActivity {
         fab = findViewById(R.id.fab);
 
         movieDao = AppDatabase.getInstance(getApplicationContext()).movieDao();
-
         executor = Executors.newFixedThreadPool(2);
 
         LiveData<List<String>> favIds = movieDao.getIds();
@@ -91,13 +79,7 @@ public class MovieDetails extends AppCompatActivity {
             }
         });
 
-
-
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         //extracting image URL
-
         Picasso.with(this).load("https://image.tmdb.org/t/p/w780" + movie.getBackdropURL()).into(backDrop);
 
 
@@ -112,7 +94,6 @@ public class MovieDetails extends AppCompatActivity {
                     executor.execute(new Runnable() {
                         @Override
                         public void run() {
-                            Log.v("movie_value", "The movie is " + movie.getTitle());
                             movieDao.delete(movie);
                         }
                     });
@@ -120,7 +101,6 @@ public class MovieDetails extends AppCompatActivity {
                     Snackbar snackView =  Snackbar.make(view, "Movie Removed From Favourites", Snackbar.LENGTH_LONG);
                     snackView.getView().setBackgroundColor(getResources().getColor(R.color.material_light_black));
                     snackView.show();
-                    // .setAction("Undo", new MyUndoListener()).show();
                 }
             });
         }else{
@@ -130,7 +110,6 @@ public class MovieDetails extends AppCompatActivity {
                     executor.execute(new Runnable() {
                         @Override
                         public void run() {
-                            Log.v("movie_value", "The movie is " + movie.getTitle());
                             movieDao.insert(movie);
                         }
                     });
@@ -138,7 +117,6 @@ public class MovieDetails extends AppCompatActivity {
                     Snackbar snackView =  Snackbar.make(view, "Movie Added to Favourites", Snackbar.LENGTH_LONG);
                     snackView.getView().setBackgroundColor(getResources().getColor(R.color.material_light_black));
                     snackView.show();
-                    // .setAction("Undo", new MyUndoListener()).show();
                 }
             });
         }
