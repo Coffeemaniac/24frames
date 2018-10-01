@@ -4,9 +4,11 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -15,6 +17,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.example.vachan.a24frames.Adapters.RecyclerViewAdapter;
 import com.example.vachan.a24frames.database.AppDatabase;
@@ -33,10 +39,20 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Movies> popularMovies;
     private ArrayList<Movies> topRatedMovies;
     private ArrayList<Movies> favouriteMovies;
+    private MainActivityViewModel mViewModel;
+
+    private ProgressBar progressBar;
+    private TextView textView;
 
     private RecyclerView.LayoutManager mLayoutManager;
-
     private MovieDao movieDao;
+
+    public static final String title = "Popular Movies";
+    public static final String CHECKED_KEY = "CHECKED_VALUE";
+
+    public interface callBack {
+        void doSomething(Intent intent, ImageView imageView);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,24 +61,20 @@ public class MainActivity extends AppCompatActivity {
 
         results = new ArrayList<Movies>();
 
-        popularMovies = new ArrayList<Movies>();
-        topRatedMovies = new ArrayList<Movies>();
-        favouriteMovies = new ArrayList<Movies>();
-
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        myToolbar.setBackgroundColor(Color.parseColor("#1976d2"));
-        setSupportActionBar(myToolbar);
-        getSupportActionBar().setTitle("Popular Movies");
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        popularMovies = new ArrayList<>();
+        topRatedMovies = new ArrayList<>();
+        favouriteMovies = new ArrayList<>();
 
 
-        //get MovieDAO
-        movieDao = AppDatabase.getInstance(getApplicationContext()).movieDao();
+        getSupportActionBar().setTitle(title);
 
+
+        progressBar = findViewById(R.id.mainProgressBar);
+        progressBar.setVisibility(View.VISIBLE);
+        textView = findViewById(R.id.noItems);
 
         // Recycler View related stuff
-        myrv = (RecyclerView) findViewById(R.id.recyclerview_id);
+        myrv = findViewById(R.id.recyclerview_id);
         if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
         {
             mLayoutManager = new GridLayoutManager(this,2);
@@ -72,14 +84,22 @@ public class MainActivity extends AppCompatActivity {
         }
 
         myrv.setLayoutManager(mLayoutManager);
-        myAdapter = new RecyclerViewAdapter(MainActivity.this, results);
+        myAdapter = new RecyclerViewAdapter(MainActivity.this, results, new callBack() {
+            @Override
+            public void doSomething(Intent intent, ImageView imageView) {
+                ActivityOptionsCompat options = ActivityOptionsCompat.
+                        makeSceneTransitionAnimation(MainActivity.this, imageView, "poster");
+                startActivity(intent, options.toBundle());
+            }
+        });
         myrv.setAdapter(myAdapter);
+        myrv.setHasFixedSize(true);
 
-        MainActivityViewModel mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+
+       mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
 
         if(savedInstanceState != null){
-            checked = savedInstanceState.getInt("CHECKED_VALUE");
-            Log.v("inSavedInstance", "The value of checked is " + checked);
+            checked = savedInstanceState.getInt(CHECKED_KEY);
 
         }
 
@@ -102,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        final LiveData<List<Movies>> favMovies = movieDao.getAll();
+        final LiveData<List<Movies>> favMovies = mViewModel.getFavMovies(getApplication());
         favMovies.observe(this, new Observer<List<Movies>>() {
             @Override
             public void onChanged(@Nullable List<Movies> movies) {
@@ -116,8 +136,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_menu, menu);
-
-        Log.v("onCreateOptionsMenu", "The value of checked is " + checked);
         switch (checked){
             case 0:
                 menu.findItem(R.id.PopularMovies).setChecked(true);
@@ -133,11 +151,15 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt("CHECKED_VALUE", checked);
+        outState.putInt(CHECKED_KEY, checked);
         super.onSaveInstanceState(outState);
     }
 
     private void displayResults(){
+            if(popularMovies.size() != 0){
+                progressBar.setVisibility(View.GONE);
+                myrv.setVisibility(View.VISIBLE);
+            }
             results.clear();
             if(checked == 0){
                 results.addAll(popularMovies);
@@ -151,6 +173,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
+        textView.setVisibility(View.GONE);
+        myrv.setVisibility(View.VISIBLE);
         switch (item.getItemId()) {
             case R.id.PopularMovies:
                 checked = 0;
@@ -175,6 +199,14 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 }
             case R.id.Favourite:
+                if(favouriteMovies.size() == 0){
+                    myrv.setVisibility(View.GONE);
+                    textView.setText(R.string.empty_fav_list);
+                    textView.setVisibility(View.VISIBLE);
+                }else{
+                    textView.setVisibility(View.GONE);
+                    myrv.setVisibility(View.VISIBLE);
+                }
                     checked = 2;
                     item.setChecked(true);
                     results.clear();

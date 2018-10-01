@@ -10,7 +10,6 @@
             android:icon="@android:drawable/ic_dialog_info"
             app:showAsAction="never"
             android:title="Popular Movies"
-
             android:orderInCategory="1" />
 
 

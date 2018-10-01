@@ -114,9 +114,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:text="WATCH TRAILER"
+            android:text="@string/share_action"
             app:layout_constraintBottom_toBottomOf="@+id/imageView"
             app:layout_constraintStart_toEndOf="@+id/imageView" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/trailerRecyclerView"
+            android:scrollbarAlwaysDrawHorizontalTrack="true"
+            android:layout_width="314dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/textView10"
+            app:layout_constraintStart_toStartOf="@+id/textView10"
+            app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
 
     </android.support.constraint.ConstraintLayout>

@@ -18,8 +18,6 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.My
     private Context mContext ;
     private ArrayList<Review> mData;
 
-    public static String LOG_TAG = ReviewListAdapter.class.getSimpleName();
-
     public ReviewListAdapter(Context context, ArrayList<Review> data){
         this.mContext = context;
         this.mData = data;
@@ -36,7 +34,6 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.My
 
     @Override
     public void onBindViewHolder(@NonNull ReviewListAdapter.MyViewHolder holder, int position) {
-        Log.v(LOG_TAG, "The string value is " + mData.get(position).getContent());
         holder.authorTv.setText(mData.get(position).getName());
         holder.infoTv.setText(mData.get(position).getContent());
     }

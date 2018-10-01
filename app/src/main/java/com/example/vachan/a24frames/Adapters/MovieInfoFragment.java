@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.vachan.a24frames.BuildConfig;
 import com.example.vachan.a24frames.MovieAPIClient;
@@ -38,17 +41,25 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MovieInfoFragment extends Fragment {
 
    @BindView(R.id.textView2)
-   TextView titleView;
+   public TextView titleView;
    @BindView(R.id.textView5)
-   TextView rating;
+   public TextView rating;
    @BindView(R.id.textView7)
-   TextView releaseDate;
+   public TextView releaseDate;
    @BindView(R.id.textView10)
-   TextView plot;
+   public TextView plot;
    @BindView(R.id.trailer)
-   Button button;
+   public Button button;
    @BindView(R.id.imageView)
-   ImageView posterImage;
+   public ImageView posterImage;
+   @BindView(R.id.trailerRecyclerView)
+   public RecyclerView trailerRecyclerView;
+
+    public static final String IMAGE_URL = "https://image.tmdb.org/t/p/w780";
+    public static final String MOVIE_KEY = "movie";
+    public static final String RATING_STRING = "/10";
+
+
 
     private Call<Videos> callVideos;
 
@@ -57,6 +68,7 @@ public class MovieInfoFragment extends Fragment {
     public static String MovieAPIKey;
     private String youtube_url;
     private Movies movie;
+    private movieTrailerAdapter trailerAdapter;
 
     private ArrayList<Trailer> trailers;
 
@@ -67,7 +79,6 @@ public class MovieInfoFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment r
         return inflater.inflate(R.layout.movie_info_fragment, container, false);
     }
 
@@ -76,16 +87,21 @@ public class MovieInfoFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
 
-        movie = getArguments().getParcelable("movie");
+        trailers = new ArrayList<>();
 
-        trailers = new ArrayList<Trailer>();
+        trailerAdapter = new movieTrailerAdapter(getContext(), trailers);
+        trailerRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        trailerRecyclerView.setAdapter(trailerAdapter);
+
+        movie = getArguments().getParcelable(MOVIE_KEY);
+
 
         titleView.setText(movie.getTitle());
-        rating.setText(movie.getRating() + "/10");
+        rating.setText(movie.getRating() + RATING_STRING);
         releaseDate.setText(movie.getRelease_date());
         plot.setText(movie.getPlot());
 
-        Picasso.with(getActivity()).load("https://image.tmdb.org/t/p/w780" + movie.getImageUrl()).into(posterImage);
+        Picasso.with(getActivity()).load(IMAGE_URL + movie.getImageUrl()).into(posterImage);
 
         MovieAPIKey = BuildConfig.ApiKey;
 
@@ -96,7 +112,6 @@ public class MovieInfoFragment extends Fragment {
             @Override
             public void onResponse(Call<Videos> call, Response<Videos> response) {
                 trailers.addAll(response.body().getTrailerList());
-                Log.v("size", "the size of trailer is " + trailers.size());
                 if(trailers.size() == 0){
                     youtube_url = null;
                     button.setAlpha(0.0f);
@@ -104,20 +119,22 @@ public class MovieInfoFragment extends Fragment {
                     youtube_url = trailers.get(0).getVideoKey();
                     button.setAlpha(1.0f);
                 }
-
+                trailerAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onFailure(Call<Videos> call, Throwable t) {
-
+                Toast.makeText(getContext(), R.string.network_failure, Toast.LENGTH_LONG).show();
             }
         });
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(youtube_url)));
-
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_TEXT, youtube_url);
+                startActivity(Intent.createChooser(shareIntent, "Share link using"));
             }
         });
     }
@@ -125,7 +142,7 @@ public class MovieInfoFragment extends Fragment {
     public static Fragment newInstance(Movies movie) {
         MovieInfoFragment fragment = new MovieInfoFragment();
         Bundle args = new Bundle();
-        args.putParcelable("movie", movie);
+        args.putParcelable(MOVIE_KEY, movie);
         fragment.setArguments(args);
         return fragment;
     }

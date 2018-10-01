@@ -6,10 +6,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.vachan.a24frames.BuildConfig;
 import com.example.vachan.a24frames.MovieAPIClient;
@@ -24,20 +26,23 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MovieReviewFragment extends Fragment {
 
 
     @BindView(R.id.reviewsList)
     public RecyclerView rv;
+    @BindView(R.id.progressbar)
+    public ProgressBar progressBar;
+    @BindView(R.id.message)
+    public TextView textView;
     public ReviewListAdapter reviewAdapter;
     public ArrayList<Review> reviews;
+
+    public static final String MOVIE_KEY = "movie";
 
 
     public MovieReviewFragment() {
@@ -57,13 +62,13 @@ public class MovieReviewFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
 
-        Movies movie = getArguments().getParcelable("movie");
+        Movies movie = getArguments().getParcelable(MOVIE_KEY);
 
         String id = movie.getId();
 
         reviews = new ArrayList<>();
 
-        rv = (RecyclerView) view.findViewById(R.id.reviewsList);
+        rv =  view.findViewById(R.id.reviewsList);
         reviewAdapter = new ReviewListAdapter(getContext(), reviews);
         rv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         rv.setAdapter(reviewAdapter);
@@ -72,17 +77,23 @@ public class MovieReviewFragment extends Fragment {
         MovieAPIClient client = NetworkUtil.getService();
         Call<ReviewsList> callReviews = client.getReviews(id, MovieAPIKey);
 
+        progressBar.setVisibility(View.VISIBLE);
         callReviews.enqueue(new Callback<ReviewsList>() {
             @Override
             public void onResponse(Call<ReviewsList> call, Response<ReviewsList> response) {
                 reviews.addAll(response.body().getReviewList());
-                Log.v("results", "the value is " + reviews.size());
-                reviewAdapter.notifyDataSetChanged();
+                if(reviews.size() == 0){
+                        textView.setVisibility(View.VISIBLE);
+                        rv.setVisibility(View.GONE);
+                }else{
+                    reviewAdapter.notifyDataSetChanged();
+                }
+                progressBar.setVisibility(View.GONE);
             }
 
             @Override
             public void onFailure(Call<ReviewsList> call, Throwable t) {
-
+                Toast.makeText(getContext(), R.string.network_failure, Toast.LENGTH_LONG).show();
             }
         });
 
@@ -91,7 +102,7 @@ public class MovieReviewFragment extends Fragment {
     public static Fragment newInstance(Movies movie) {
         MovieReviewFragment fragment = new MovieReviewFragment();
         Bundle args = new Bundle();
-        args.putParcelable("movie", movie);
+        args.putParcelable(MOVIE_KEY, movie);
         fragment.setArguments(args);
         return fragment;
     }

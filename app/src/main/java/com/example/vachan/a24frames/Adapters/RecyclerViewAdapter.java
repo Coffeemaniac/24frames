@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.vachan.a24frames.MainActivity;
 import com.example.vachan.a24frames.MovieDetails;
 import com.example.vachan.a24frames.R;
 import com.example.vachan.a24frames.database.Movies;
@@ -19,11 +20,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private Context mContext ;
     private ArrayList<Movies> mData ;
+    private MainActivity.callBack listener;
 
 
-    public RecyclerViewAdapter(Context mContext, ArrayList<Movies> mData) {
+    public static final String MOVIE_KEY = "movie";
+    public static final String IMAGE_URL = "https://image.tmdb.org/t/p/w780";
+
+
+    public RecyclerViewAdapter(Context mContext, ArrayList<Movies> mData, MainActivity.callBack listener) {
         this.mContext = mContext;
         this.mData = mData;
+        this.listener = listener;
     }
 
     @Override
@@ -35,22 +42,19 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
-        Picasso.with(mContext).load("https://image.tmdb.org/t/p/w780" + mData.get(position).getImageUrl())
+        Picasso.with(mContext).load(IMAGE_URL + mData.get(position).getImageUrl())
                 .into(holder.img_book_thumbnail);
 
-        holder.img_book_thumbnail.setOnClickListener(new View.OnClickListener() {
+       holder.img_book_thumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 Intent intent = new Intent(mContext, MovieDetails.class);
                 Movies movie = mData.get(position);
-                intent.putExtra("Movie", movie);
-
-                // start the activity
-                mContext.startActivity(intent);
-
+                intent.putExtra(MOVIE_KEY, movie);
+                listener.doSomething(intent, holder.img_book_thumbnail);
             }
         });
     }

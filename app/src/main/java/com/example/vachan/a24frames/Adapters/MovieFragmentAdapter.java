@@ -10,6 +10,8 @@ import com.example.vachan.a24frames.database.Movies;
 public class MovieFragmentAdapter extends FragmentPagerAdapter {
 
     public Movies movie;
+    public static final String INFO_TITLE = "Info";
+    public static final String REVIEWS_TITLE = "reviews";
 
 
     public MovieFragmentAdapter(FragmentManager fm, Movies movie) {
@@ -21,11 +23,11 @@ public class MovieFragmentAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         if(position == 0){
-            return "Info";
+            return INFO_TITLE;
         }
 
         if(position == 1){
-            return "Reviews";
+            return REVIEWS_TITLE;
         }
 
         return null;

@@ -11,6 +11,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -32,6 +34,10 @@ public class MovieDetails extends AppCompatActivity {
     public Toolbar toolbar;
     @BindView(R.id.expandedImage)
     public ImageView backDrop;
+
+
+    public static final String IMAGE_URL = "https://image.tmdb.org/t/p/w780";
+    public static final String MOVIE_KEY = "movie";
 
 
     private String id;
@@ -56,9 +62,9 @@ public class MovieDetails extends AppCompatActivity {
 
         Intent intent = getIntent();
         final Bundle bd = intent.getExtras();
-        movie = bd.getParcelable("Movie");
+        movie = bd.getParcelable(MOVIE_KEY);
 
-        toolbar.setTitle(movie.getTitle());
+        getSupportActionBar().setTitle(movie.getTitle());
 
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         fragmentPagerAdapter = new MovieFragmentAdapter(getSupportFragmentManager(), movie);
@@ -80,9 +86,24 @@ public class MovieDetails extends AppCompatActivity {
         });
 
         //extracting image URL
-        Picasso.with(this).load("https://image.tmdb.org/t/p/w780" + movie.getBackdropURL()).into(backDrop);
+        Picasso.with(this).load(IMAGE_URL + movie.getBackdropURL()).into(backDrop);
 
+    }
 
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                return true;
+
+        }
+        return (super.onOptionsItemSelected(item));
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        supportFinishAfterTransition();
     }
 
     private void setFabButton(List<String> ids){
@@ -98,7 +119,7 @@ public class MovieDetails extends AppCompatActivity {
                         }
                     });
                     fab.setImageResource(R.drawable.ic_fav_icon);
-                    Snackbar snackView =  Snackbar.make(view, "Movie Removed From Favourites", Snackbar.LENGTH_LONG);
+                    Snackbar snackView =  Snackbar.make(view,R.string.fab_add, Snackbar.LENGTH_LONG);
                     snackView.getView().setBackgroundColor(getResources().getColor(R.color.material_light_black));
                     snackView.show();
                 }
@@ -114,7 +135,7 @@ public class MovieDetails extends AppCompatActivity {
                         }
                     });
                     fab.setImageResource(R.drawable.ic_delete_black_24dp);
-                    Snackbar snackView =  Snackbar.make(view, "Movie Added to Favourites", Snackbar.LENGTH_LONG);
+                    Snackbar snackView =  Snackbar.make(view,R.string.fab_removed , Snackbar.LENGTH_LONG);
                     snackView.getView().setBackgroundColor(getResources().getColor(R.color.material_light_black));
                     snackView.show();
                 }

@@ -7,7 +7,7 @@ public class Trailer {
 
     private String id;
     private String key;
-    public final String youtube_url = "http://www.youtube.com/watch?v=";
+    public static final String youtube_url = "https://img.youtube.com/vi/";
 
     public Trailer(String id, String key) {
         this.id = id;
@@ -19,7 +19,7 @@ public class Trailer {
     }
 
     public String getThumbnail() {
-        return "https://img.youtube.com/vi/" + key + "0.jpg";
+        return youtube_url + key + "/0.jpg";
     }
 
     public String getVideoKey(){

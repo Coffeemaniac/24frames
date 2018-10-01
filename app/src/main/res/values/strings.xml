@@ -7,8 +7,17 @@
     <string name="sample_title">Avengers: Infinity War</string>
     <string name="title_label"> Title </string>
     <string name="vote"> 8.3 </string>
+    <string name="share_action"> share </string>
     <string name="synopsis_label"> Synopsis </string>
     <string name="release_date_label">Release Date</string>
     <string name="synopsis">"As the Avengers and their allies have continued to protect the world from threats too large for any one hero to handle, a new danger has emerged from the cosmic shadows: Thanos. A despot of intergalactic infamy, his goal is to collect all six Infinity Stones, artifacts of unimaginable power, and use them to inflict his twisted will on all of reality. Everything the Avengers have fought for has led up to this moment - the fate of Earth and existence itself has never been more uncertain.",</string>
     <string name="release_date">2018-04-25</string>
+    <string name="empty_fav_list">"You haven't added any movies to your favourite list, you can do so by tapping on star icon in Movie details" </string>
+    <string name="network_failure"> "Network failure! Check your internet connection" </string>
+
+
+    <string name="no_reviews">"There are no reviews for this movie yet :("</string>
+
+    <string name="fab_add">"Movie Added to Favourites"</string>
+    <string name="fab_removed">"Movie Removed From Favourites"</string>
 </resources>
