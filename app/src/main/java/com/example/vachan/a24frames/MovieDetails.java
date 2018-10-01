@@ -119,7 +119,7 @@ public class MovieDetails extends AppCompatActivity {
                         }
                     });
                     fab.setImageResource(R.drawable.ic_fav_icon);
-                    Snackbar snackView =  Snackbar.make(view,R.string.fab_add, Snackbar.LENGTH_LONG);
+                    Snackbar snackView =  Snackbar.make(view,R.string.fab_removed, Snackbar.LENGTH_LONG);
                     snackView.getView().setBackgroundColor(getResources().getColor(R.color.material_light_black));
                     snackView.show();
                 }
@@ -135,7 +135,7 @@ public class MovieDetails extends AppCompatActivity {
                         }
                     });
                     fab.setImageResource(R.drawable.ic_delete_black_24dp);
-                    Snackbar snackView =  Snackbar.make(view,R.string.fab_removed , Snackbar.LENGTH_LONG);
+                    Snackbar snackView =  Snackbar.make(view,R.string.fab_add , Snackbar.LENGTH_LONG);
                     snackView.getView().setBackgroundColor(getResources().getColor(R.color.material_light_black));
                     snackView.show();
                 }
